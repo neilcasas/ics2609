@@ -1,6 +1,5 @@
 package com.mycompany.group1;
 
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +52,12 @@ public class JDBCStartup {
         frame.add(new JLabel());
         frame.add(loginBtn);
 
+        // Store failed login ctr in hidden field
+        JTextField failedLoginCtr = new JTextField(20);
+        failedLoginCtr.setText("0");
+        failedLoginCtr.setVisible(false);
+        frame.add(failedLoginCtr);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 200);
         frame.setLocationRelativeTo(null);
@@ -64,8 +69,10 @@ public class JDBCStartup {
                 String username = userField.getText();
                 String password = new String(passwordField.getPassword());
                 try {
+                    
                     ResultSet rs = jdbc.getUser(username, password);
                     if (rs.next()) {
+                        failedLoginCtr.setText("0"); // reset when its a successful login
                         String role = rs.getString("user_role");
                         frame.dispose();
                         if ("admin".equalsIgnoreCase(role)) {
@@ -75,6 +82,14 @@ public class JDBCStartup {
                         }
                     } else {
                         JOptionPane.showMessageDialog(frame, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                        int failedCtr = Integer.parseInt(failedLoginCtr.getText());
+                        failedCtr++;
+
+                        if (failedCtr >= 3) {
+                            System.exit(0);
+                        }
+
+                        failedLoginCtr.setText(failedCtr + "");
                     }
                 } catch (SQLException err) {
                     JOptionPane.showMessageDialog(frame, "An error occurred while processing your login.", "Error", JOptionPane.ERROR_MESSAGE);
