@@ -189,7 +189,7 @@ public class DatabaseHandler {
     public ArrayList<Student> getStudentsByYear(int year) throws SQLException {
         String sqlStr = "SELECT * FROM Students s WHERE s.student_number LIKE ?";
         PreparedStatement pstmt = conn.prepareStatement(sqlStr);
-        pstmt.setInt(1, year);
+        pstmt.setString(1, year + "%");
 
         ArrayList<Student> students = new ArrayList<>();
 
@@ -401,6 +401,8 @@ public class DatabaseHandler {
         );
         dbh.updateStudentInfo("20250102023", updatedStudentInfo);
         Student updatedStudent = dbh.getStudent("20250102023");
+        
+        System.out.println("Updated student: ");
         System.out.println(updatedStudent.toString());
 
         dbh.updateStudentUnits("20250102023", 12);
