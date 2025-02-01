@@ -37,7 +37,7 @@ public class DatabaseHandler {
 
         @Override
         public String toString() {
-            return this.number + "-" + this.fname + "-" + this.lname + "\n Units: " + this.units + "\n";
+            return this.number + "-" + this.fname + "-" + this.lname + " Units: " + this.units + "\n";
         }
     }
 
@@ -144,24 +144,20 @@ public class DatabaseHandler {
 
         try (ResultSet rs = pstmt.executeQuery()) {
 
-            if (rs.next()) {
-                while (rs.next()) {
-                    Student s = new Student(
-                            rs.getString("student_number"),
-                            rs.getString("student_fname"),
-                            rs.getString("student_mname"),
-                            rs.getString("student_lname"),
-                            rs.getString("student_sex"),
-                            rs.getString("student_birth"),
-                            rs.getInt("student_start"),
-                            rs.getString("student_department"),
-                            rs.getInt("student_units"),
-                            rs.getString("student_address")
-                    );
-
-                    students.add(s);
-                }
-
+            while (rs.next()) {
+                Student s = new Student(
+                        rs.getString("student_number"),
+                        rs.getString("student_fname"),
+                        rs.getString("student_mname"),
+                        rs.getString("student_lname"),
+                        rs.getString("student_sex"),
+                        rs.getString("student_birth"),
+                        rs.getInt("student_start"),
+                        rs.getString("student_department"),
+                        rs.getInt("student_units"),
+                        rs.getString("student_address")
+                );
+                students.add(s);
             }
         } catch (SQLException e) {
             System.err.println("Error retrieving students: " + e.getMessage());
@@ -171,13 +167,14 @@ public class DatabaseHandler {
     }
 
     public Boolean removeStudent(String studentNumber) throws SQLException {
-        String sqlStr = "DELETE FROM Students s WHERE s.student_number = ?";
+        String sqlStr = "DELETE FROM Students WHERE student_number = ?";
         PreparedStatement pstmt = conn.prepareStatement(sqlStr);
         pstmt.setString(1, studentNumber);
 
         try {
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
+                System.out.println("Successfully deleted " + studentNumber);
                 return true;
             } else {
                 System.err.println("Delete unsuccesful: No students matched the query.");
@@ -198,25 +195,22 @@ public class DatabaseHandler {
 
         try (ResultSet rs = pstmt.executeQuery()) {
 
-            if (rs.next()) {
-                while (rs.next()) {
-                    Student s = new Student(
-                            rs.getString("student_number"),
-                            rs.getString("student_fname"),
-                            rs.getString("student_mname"),
-                            rs.getString("student_lname"),
-                            rs.getString("student_sex"),
-                            rs.getString("student_birth"),
-                            rs.getInt("student_start"),
-                            rs.getString("student_department"),
-                            rs.getInt("student_units"),
-                            rs.getString("student_address")
-                    );
-
-                    students.add(s);
-                }
-
+            while (rs.next()) {
+                Student s = new Student(
+                        rs.getString("student_number"),
+                        rs.getString("student_fname"),
+                        rs.getString("student_mname"),
+                        rs.getString("student_lname"),
+                        rs.getString("student_sex"),
+                        rs.getString("student_birth"),
+                        rs.getInt("student_start"),
+                        rs.getString("student_department"),
+                        rs.getInt("student_units"),
+                        rs.getString("student_address")
+                );
+                students.add(s);
             }
+
         } catch (SQLException e) {
             System.err.println("Error retrieving students: " + e.getMessage());
         }
@@ -232,8 +226,7 @@ public class DatabaseHandler {
                 + ", student_department = ?\n"
                 + ", student_address = ?\n"
                 + "WHERE student_number = ?";
-        
-        
+
         PreparedStatement pstmt = conn.prepareStatement(sqlStr);
         pstmt.setString(1, studentInfo.fname);
         pstmt.setString(2, studentInfo.mname);
@@ -241,7 +234,7 @@ public class DatabaseHandler {
         pstmt.setString(4, studentInfo.department);
         pstmt.setString(5, studentInfo.address);
         pstmt.setString(6, studentNumber);
-        
+
         try {
             int rows = pstmt.executeUpdate();
             if (rows > 0) {
@@ -257,9 +250,9 @@ public class DatabaseHandler {
     }
 
     public Boolean updateStudentUnits(String studentNumber, int subtractedUnits) throws SQLException {
-        String sqlStr = "UPDATE Students s\n"
-                + "SET s.student_units = ?\n"
-                + "WHERE s.student_number = ?";
+        String sqlStr = "UPDATE Students \n"
+                + "SET student_units = ?\n"
+                + "WHERE student_number = ?";
         PreparedStatement pstmt = conn.prepareStatement(sqlStr);
         pstmt.setInt(1, subtractedUnits);
         pstmt.setString(2, studentNumber);
@@ -352,7 +345,7 @@ public class DatabaseHandler {
         dbh.insertStudent(s);
 
         Student s1 = new Student(
-                "20250121248",
+                "20240121248",
                 "Michael",
                 "Ego",
                 "Kaiser",
@@ -364,12 +357,16 @@ public class DatabaseHandler {
                 "P. Noval St."
         );
         dbh.insertStudent(s1);
+        
+        System.out.println("");
 
         // Retrieve a student by student number
+        System.out.println("Retrieve a student by student number:");
         Student retrievedBySn = dbh.getStudent("20250102023");
         System.out.println(retrievedBySn.toString());
 
         // Retrieve a student by name
+        System.out.println("Retrieve a student by name:");
         Student retrievedByName = dbh.getStudent("Michael", "Ego", "Kaiser");
         System.out.println(retrievedByName.toString());
 
@@ -377,38 +374,41 @@ public class DatabaseHandler {
         ArrayList<Student> allStudents = dbh.getStudents();
         System.out.println("Retrieving all students: ");
         for (Student student : allStudents) {
-            System.out.print(student.toString() + " ");
+            System.out.print(student.toString());
         }
-      
+
+        System.out.println("");
+        
         // Retrieve all students by year
-        ArrayList<Student> studentsByYear = dbh.getStudentsByYear(2025);
+        System.out.println("Retrieving students by year 2024:");
+        ArrayList<Student> studentsByYear = dbh.getStudentsByYear(2024);
         for (Student student : studentsByYear) {
-            System.out.print(student.toString() + " ");
+            System.out.print(student.toString());
         }
 
         // Update student information
         Student updatedStudentInfo = new Student(
-                "20250112203",
+                "20250102023",
                 "Seishiro",
                 "Hassle",
-                "Nagi", 
+                "Nagi",
                 "M",
                 "2003-11-01",
-                2025, 
+                2025,
                 "CICS",
                 15,
                 "456 Elm St"
         );
         dbh.updateStudentInfo("20250102023", updatedStudentInfo);
-        Student updatedStudent = dbh.getStudent("20250112203");
+        Student updatedStudent = dbh.getStudent("20250102023");
         System.out.println(updatedStudent.toString());
 
-        dbh.updateStudentUnits("20250112203", 12);
-        Student updatedUnitsStudent = dbh.getStudent("20250112203");
+        dbh.updateStudentUnits("20250102023", 12);
+        Student updatedUnitsStudent = dbh.getStudent("20250102023");
         System.out.println("Lesser units: " + updatedUnitsStudent.toString());
 
 //        // Delete a student
-//        dbh.removeStudent("20250112203");
-//        Student deletedStudent = dbh.getStudent("20250112203");
+//        System.out.println("");
+//        dbh.removeStudent("20250102023");
     }
 }
