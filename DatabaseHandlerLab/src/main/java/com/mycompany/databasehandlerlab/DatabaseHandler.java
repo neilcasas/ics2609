@@ -409,8 +409,8 @@ public class DatabaseHandler {
         Student updatedUnitsStudent = dbh.getStudent("20250102023");
         System.out.println("Lesser units: " + updatedUnitsStudent.toString());
 
-//        // Delete a student
-//        System.out.println("");
-//        dbh.removeStudent("20250102023");
+       // Delete a student
+       System.out.println("");
+       dbh.removeStudent("20250102023");
     }
 }
