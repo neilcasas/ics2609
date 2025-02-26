@@ -16,7 +16,7 @@
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-lg" style="width: 350px;">
         <h2 class="text-center">Login</h2>
-        <form action="login" method="POST">
+        <form action="/WebApplicationDB/login" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" name="username" required>
