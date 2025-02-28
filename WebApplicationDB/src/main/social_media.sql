@@ -1,14 +1,12 @@
 CREATE DATABASE IF NOT EXISTS social_media;
 USE social_media;
 
--- Account Table
 CREATE TABLE account (
     user_name VARCHAR(50) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     user_role ENUM('admin', 'user', 'super_admin') NOT NULL
 );
 
--- Posts Table (Normalized)
 CREATE TABLE posts (
     post_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(50),
@@ -17,7 +15,6 @@ CREATE TABLE posts (
     FOREIGN KEY (user_name) REFERENCES account(user_name) ON DELETE CASCADE
 );
 
--- Follows Table (Many-to-Many Relationship)
 CREATE TABLE follows (
     user_name VARCHAR(50),
     followed_user_name VARCHAR(50),
@@ -26,7 +23,6 @@ CREATE TABLE follows (
     FOREIGN KEY (followed_user_name) REFERENCES account(user_name) ON DELETE CASCADE
 );
 
--- Messages to Admin
 CREATE TABLE admin_messages (
     message_id INT AUTO_INCREMENT PRIMARY KEY,
     sender VARCHAR(50),
