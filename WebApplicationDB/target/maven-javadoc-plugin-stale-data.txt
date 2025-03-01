@@ -1,0 +1,46 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+-classpath
+'C:/Users/edjbo/.m2/repository/javax/javaee-web-api/7.0/javaee-web-api-7.0.jar;C:/Users/edjbo/.m2/repository/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar;C:/Users/edjbo/.m2/repository/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/Users/edjbo/ics2609/WebApplicationDB/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2025. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/edjbo/ics2609/WebApplicationDB/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'WebApplicationDB 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/7/docs/api' 'C:/Users/edjbo/ics2609/WebApplicationDB/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'WebApplicationDB 1.0-SNAPSHOT API'
+com.mycompany.webapplicationdb
+C:\Users\edjbo\.m2\repository\javax\javaee-web-api\7.0\javaee-web-api-7.0.jar = 1740736790609
+C:\Users\edjbo\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar = 1740736790672
+C:\Users\edjbo\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar = 1740736790671
+C:\Users\edjbo\ics2609\WebApplicationDB\src\main\java\social_media = 1740764268791
+C:\Users\edjbo\ics2609\WebApplicationDB\src\main\java = 1740764268791
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\allclasses-frame.html = 1740766961336
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\allclasses-noframe.html = 1740766961337
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\constant-values.html = 1740766961311
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\deprecated-list.html = 1740766961334
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\help-doc.html = 1740766961342
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\index-all.html = 1740766961330
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\index.html = 1740766961339
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\overview-tree.html = 1740766961327
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\package-list = 1740766961297
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\script.js = 1740766961344
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\serialized-form.html = 1740766961316
+C:\Users\edjbo\ics2609\WebApplicationDB\target\reports\apidocs\stylesheet.css = 1740755469861

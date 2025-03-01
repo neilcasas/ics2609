@@ -1,6 +1,5 @@
 CREATE DATABASE IF NOT EXISTS social_media;
 USE social_media;
-
 CREATE TABLE account (
     user_name VARCHAR(50) PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
