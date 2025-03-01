@@ -150,5 +150,14 @@ public class JDBC {
             e.printStackTrace();
         }
     }
+    
+    // Get followed users
+    public ResultSet getFollowed(String username) throws SQLException {
+        String sqlStr = "SELECT follow1, follow2, follow3 FROM follows WHERE user_name = ?";
+        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        stmt.setString(1, username);
+        
+        return stmt.executeQuery();
+    }
    
 }

@@ -45,7 +45,7 @@
                         <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username") %>">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="/WebApplicationDB/views/users.jsp">Users</a>
+                        <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/views/help.jsp">Help</a>

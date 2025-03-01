@@ -1,69 +1,52 @@
-<%@ page import="java.sql.*" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-    .limited-form {
-        max-width: 400px; 
-    }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Users</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand fs-3" href="/WebApplicationDB/views/profile.jsp">Welcome, <%= session.getAttribute("username")%></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link fs-4" href="/WebApplicationDB/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username") %>">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="/WebApplicationDB/views/help.jsp">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-    h1 {
-        margin-bottom: 80px; 
-    }
-
-    h2 {
-        margin-top: 50px; 
-    }
-    
-    .navbar-brand{
-        margin-left: 100px;
-    }
-    
-
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand fs-3" href="/WebApplicationDB/views/profile.jsp">Welcome, Kaiser</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link fs-4" href="/WebApplicationDB/views/landing.jsp">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="/WebApplicationDB/views/profile.jsp">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="/WebApplicationDB/views/users.jsp">Users <span class="sr-only">(current)</span> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="/WebApplicationDB/views/help.jsp">Help</a>
-            </li>
-          </ul>
-        </div>
-    </nav>
-    <div class="limited-container">
-        <div class="container mt-3" style="max-width: 1745px; margin: 0 auto;">
+        <div class="container mt-3">
             <h2>Followed Users</h2>
-            <ul class="ps-3">  <!-- Add padding to maintain indentation -->
-                <li class="d-flex align-items-center gap-2">
-                    <form method="POST">
-                        <input type="hidden" name="unfollow_user" value="Isagi Yoichi">
-                        <input type="submit" class="btn btn-danger" value="Unfollow">
-                    </form>
-                    <span>Isagi Yoichi</span>
-                </li>
+            <ul class="ps-3">
+                <c:forEach var="user" items="${followedUsers}">
+                    <li class="d-flex align-items-center gap-2 m-2">
+                        <form method="POST">
+                            <input type="hidden" name="unfollow_user" value="${user}">
+                            <input type="submit" class="btn btn-danger" value="Unfollow">
+                        </form>
+                        <span>${user}</span>
+                    </li>
+                </c:forEach>
             </ul>
-            
-            
+
             <hr>
 
             <h2>Follow a new user</h2>
@@ -78,6 +61,5 @@
                 </div>
             </form>
         </div>
-    </div>
-</body>
+    </body>
 </html>
