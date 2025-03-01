@@ -150,14 +150,30 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-    
+
     // Get followed users
     public ResultSet getFollowed(String username) throws SQLException {
         String sqlStr = "SELECT follow1, follow2, follow3 FROM follows WHERE user_name = ?";
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
         stmt.setString(1, username);
-        
+
         return stmt.executeQuery();
     }
-   
+
+    public void unfollowUser(String username, String unfollowed) throws SQLException {
+        String sqlStr = "UPDATE follows SET "
+                + "follow1 = CASE WHEN follow1 = ? THEN NULL ELSE follow1 END, "
+                + "follow2 = CASE WHEN follow2 = ? THEN NULL ELSE follow2 END, "
+                + "follow3 = CASE WHEN follow3 = ? THEN NULL ELSE follow3 END "
+                + "WHERE user_name = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sqlStr)) {
+            stmt.setString(1, unfollowed);
+            stmt.setString(2, unfollowed);
+            stmt.setString(3, unfollowed);
+            stmt.setString(4, username);
+            stmt.executeUpdate();
+        }
+    }
+
 }

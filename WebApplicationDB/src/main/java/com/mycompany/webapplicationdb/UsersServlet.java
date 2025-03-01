@@ -48,4 +48,32 @@ public class UsersServlet extends HttpServlet {
         request.setAttribute("followedUsers", followedUsers);
         request.getRequestDispatcher("/views/users.jsp").forward(request, response);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Get the currently logged-in user (assumed to be stored in session)
+        String username = (String) request.getSession().getAttribute("username");
+
+        // Get the unfollowed user from the form submission
+        String unfollowedUser = request.getParameter("unfollow_user");
+
+        // Ensure both values are valid before proceeding
+        if (username != null && !username.isEmpty()
+                && unfollowedUser != null && !unfollowedUser.isEmpty()) {
+
+            try {
+                // Call JDBC method to remove the user from follows
+                jdbc.unfollowUser(username, unfollowedUser);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Redirect back to users after processing
+        response.sendRedirect("users");
+    }
+
 }

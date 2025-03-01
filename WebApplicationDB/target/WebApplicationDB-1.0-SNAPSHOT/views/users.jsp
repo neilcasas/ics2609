@@ -11,7 +11,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand fs-3" href="/WebApplicationDB/views/profile.jsp">Welcome, <%= session.getAttribute("username")%></a>
+            <a class="navbar-brand fs-3" href="/WebApplicationDB/home">Welcome, <%= session.getAttribute("username")%></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,7 +21,7 @@
                         <a class="nav-link fs-4" href="/WebApplicationDB/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username") %>">Profile</a>
+                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username")%>">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
@@ -36,15 +36,23 @@
         <div class="container mt-3">
             <h2>Followed Users</h2>
             <ul class="ps-3">
-                <c:forEach var="user" items="${followedUsers}">
-                    <li class="d-flex align-items-center gap-2 m-2">
-                        <form method="POST">
-                            <input type="hidden" name="unfollow_user" value="${user}">
-                            <input type="submit" class="btn btn-danger" value="Unfollow">
-                        </form>
-                        <span>${user}</span>
-                    </li>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty followedUsers}">
+                        <c:forEach var="user" items="${followedUsers}">
+                            <li class="d-flex align-items-center gap-2 m-2">
+                                <form method="POST">
+                                    <input type="hidden" name="unfollow_user" value="${user}">
+                                    <input type="submit" class="btn btn-danger" value="Unfollow">
+                                </form>
+                                <span>${user}</span>
+                            </li>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="text-muted">No followed users</li>
+                        </c:otherwise>
+                    </c:choose>
+
             </ul>
 
             <hr>
