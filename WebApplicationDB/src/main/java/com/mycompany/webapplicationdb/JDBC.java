@@ -195,4 +195,18 @@ public class JDBC {
         return false;
     }
 
+    // Method to insert a message into admin_messages
+    public boolean insertAdminMessage(String username, String message) {
+        String sql = "INSERT INTO admin_messages (sender, content) VALUES (?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, message);
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

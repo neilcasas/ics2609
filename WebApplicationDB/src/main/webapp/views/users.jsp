@@ -27,7 +27,7 @@
                         <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="/WebApplicationDB/views/help.jsp">Help</a>
+                        <a class="nav-link fs-4" href="/WebApplicationDB/help">Help</a>
                     </li>
                 </ul>
             </div>
