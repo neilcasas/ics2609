@@ -56,7 +56,7 @@ public class LandingServlet extends HttpServlet {
 
         request.setAttribute("usernames", usernames);
         request.setAttribute("posts", posts);
-
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/landing.jsp");
         dispatcher.forward(request, response);
     }

@@ -176,4 +176,39 @@ public class JDBC {
         }
     }
 
+    public boolean followUser(String username, String followUser) throws SQLException {
+        String checkQuery = "SELECT follow1, follow2, follow3 FROM follows WHERE user_name = ?";
+        String updateQuery = "UPDATE follows SET %s = ? WHERE user_name = ?";
+
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+            checkStmt.setString(1, username);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                // Check if the user is already followed
+                for (int i = 1; i <= 3; i++) {
+                    String followedUser = rs.getString("follow" + i);
+                    if (followedUser != null && followedUser.equals(followUser)) {
+                        return false; // User is already being followed
+                    }
+                }
+
+                // Find an empty slot to follow the new user
+                for (int i = 1; i <= 3; i++) {
+                    String column = "follow" + i;
+                    if (rs.getString(column) == null) {
+                        try (PreparedStatement updateStmt = conn.prepareStatement(
+                                String.format(updateQuery, column))) {
+                            updateStmt.setString(1, followUser);
+                            updateStmt.setString(2, username);
+                            updateStmt.executeUpdate();
+                            return true; 
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

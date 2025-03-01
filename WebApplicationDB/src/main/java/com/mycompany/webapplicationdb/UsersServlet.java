@@ -53,26 +53,36 @@ public class UsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get the currently logged-in user (assumed to be stored in session)
-        String username = (String) request.getSession().getAttribute("username");
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("username");
 
-        // Get the unfollowed user from the form submission
+        // Check if the request is for unfollowing
         String unfollowedUser = request.getParameter("unfollow_user");
 
-        // Ensure both values are valid before proceeding
-        if (username != null && !username.isEmpty()
-                && unfollowedUser != null && !unfollowedUser.isEmpty()) {
-
+        if (unfollowedUser != null && !unfollowedUser.isEmpty()) {
             try {
-                // Call JDBC method to remove the user from follows
                 jdbc.unfollowUser(username, unfollowedUser);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            response.sendRedirect("users");
+            return;
+        }
 
+        // Check if the request is for following
+        String followUser = request.getParameter("follow_user");
+
+        if (followUser != null && !followUser.isEmpty()) {
+            try {
+                boolean success = jdbc.followUser(username, followUser);
+                if (!success) {
+                    request.setAttribute("errorMessage", "You can only follow up to 3 users.");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
-        // Redirect back to users after processing
         response.sendRedirect("users");
     }
 
