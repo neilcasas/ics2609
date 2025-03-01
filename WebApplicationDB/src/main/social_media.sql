@@ -34,8 +34,36 @@ CREATE TABLE follows (
     FOREIGN KEY (follow3) REFERENCES account(user_name) ON DELETE SET NULL
 );
 
+CREATE TABLE admin_messages (
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender VARCHAR(50),
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sender) REFERENCES account(user_name) ON DELETE CASCADE
+);
 
+-- Insert mock accounts
+INSERT INTO account (user_name, password, user_role) VALUES
+('alice', 'hashed_password1', 'user'),
+('bob', 'hashed_password2', 'user'),
+('charlie', 'hashed_password3', 'admin'),
+('dave', 'hashed_password4', 'user');
 
+-- Insert mock posts
+INSERT INTO posts (user_name, post1, post2, post3, post4, post5) VALUES
+('alice', 'Hello world!', 'Loving SQL!', 'Learning MySQL', NULL, NULL),
+('bob', 'First post!', 'SQL is cool', NULL, NULL, NULL),
+('charlie', 'Admin update!', 'Database changes coming soon.', NULL, NULL, NULL),
+('dave', 'Just joined!', NULL, NULL, NULL, NULL);
 
+-- Insert mock follows
+INSERT INTO follows (user_name, follow1, follow2, follow3) VALUES
+('alice', 'bob', 'charlie', NULL),
+('bob', 'alice', NULL, NULL),
+('charlie', 'alice', 'dave', NULL),
+('dave', 'bob', NULL, NULL);
 
-
+-- Insert mock admin messages
+INSERT INTO admin_messages (sender, content) VALUES
+('charlie', 'System maintenance scheduled for tomorrow.'),
+('charlie', 'New features rolling out next week!');
