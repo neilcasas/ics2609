@@ -51,4 +51,12 @@ public class JDBC {
         return stmt.executeQuery();
     }
 
+    public ResultSet getPosts(String username) throws SQLException {
+        String sqlStr = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
+        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        stmt.setString(1, username);
+        
+        return stmt.executeQuery();
+    }
+    
 }
