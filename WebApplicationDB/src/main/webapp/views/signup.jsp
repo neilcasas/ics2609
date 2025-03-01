@@ -16,14 +16,10 @@
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-lg" style="width: 350px;">
         <h2 class="text-center">Sign Up</h2>
-        <form action="signup" method="POST">
+        <form action="/WebApplicationDB/signup" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>

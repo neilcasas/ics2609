@@ -209,4 +209,28 @@ public class JDBC {
         }
     }
 
+    public boolean createUser(String username, String password, String user_role) {
+        String sql = "INSERT INTO account VALUES (?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, user_role);
+            int rowsInserted = stmt.executeUpdate();
+
+            if (rowsInserted > 0 && "user".equals(user_role)) {
+                String followSQL = "INSERT INTO follows (user_name) VALUES (?)";
+
+                try (PreparedStatement followStmt = conn.prepareStatement(followSQL)) {
+                    followStmt.setString(1, username);
+                    followStmt.executeUpdate();
+                }
+            }
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }
