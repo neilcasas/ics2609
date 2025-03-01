@@ -7,7 +7,7 @@ public class JDBC {
 
     public JDBC(String port, String databaseName, String userName, String password) {
         String jdbcUrl = "jdbc:mysql://localhost:" + port + "/" + databaseName +
-                         "?user=" + userName + "&password=" + password;
+                         "?user=" + userName + "&password=" + password + "&useSSL=false";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); 
