@@ -55,8 +55,100 @@ public class JDBC {
         String sqlStr = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
         stmt.setString(1, username);
-        
+
         return stmt.executeQuery();
     }
-    
+
+    // Add a new post
+    public void createPost(String username, String content) {
+        try {
+            // Check if user already has posts
+            String selectQuery = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
+            PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+            selectStmt.setString(1, username);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                String[] posts = {
+                    rs.getString("post1"), rs.getString("post2"), rs.getString("post3"),
+                    rs.getString("post4"), rs.getString("post5")
+                };
+
+                // If there are empty slots, place the new post in the first available one
+                for (int i = 0; i < 5; i++) {
+                    if (posts[i] == null) {
+                        String updateQuery = "UPDATE posts SET post" + (i + 1) + " = ? WHERE user_name = ?";
+                        PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+                        updateStmt.setString(1, content);
+                        updateStmt.setString(2, username);
+                        updateStmt.executeUpdate();
+                        return;
+                    }
+                }
+
+                // If all 5 slots are full, shift posts and insert new post in post1
+                String updateQuery = "UPDATE posts SET post5 = post4, post4 = post3, post3 = post2, post2 = post1, post1 = ? WHERE user_name = ?";
+                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+                updateStmt.setString(1, content);
+                updateStmt.setString(2, username);
+                updateStmt.executeUpdate();
+            } else {
+                // If user doesn't have a row in posts, create one with the first post
+                String insertQuery = "INSERT INTO posts (user_name, post1) VALUES (?, ?)";
+                PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
+                insertStmt.setString(1, username);
+                insertStmt.setString(2, content);
+                insertStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Delete a post by shifting others up
+    public void deletePost(String username, int postIndex) {
+        if (postIndex < 1 || postIndex > 5) {
+            System.out.println("Invalid post index. Must be between 1 and 5.");
+            return;
+        }
+
+        try {
+            // Get current posts
+            String selectQuery = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
+            PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+            selectStmt.setString(1, username);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                String[] posts = {
+                    rs.getString("post1"), rs.getString("post2"), rs.getString("post3"),
+                    rs.getString("post4"), rs.getString("post5")
+                };
+
+                // Ensure the requested post exists before shifting
+                if (posts[postIndex - 1] == null) {
+                    System.out.println("Post does not exist.");
+                    return;
+                }
+
+                // Shift posts up
+                for (int i = postIndex - 1; i < 4; i++) {
+                    posts[i] = posts[i + 1]; // Move next post up
+                }
+                posts[4] = null; // Last post is now empty
+
+                // Update the database
+                String updateQuery = "UPDATE posts SET post1 = ?, post2 = ?, post3 = ?, post4 = ?, post5 = ? WHERE user_name = ?";
+                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+                for (int i = 0; i < 5; i++) {
+                    updateStmt.setString(i + 1, posts[i]); // Set updated post values
+                }
+                updateStmt.setString(6, username);
+                updateStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+   
 }

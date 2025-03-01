@@ -1,4 +1,5 @@
 com\mycompany\webapplicationdb\JDBC.class
+com\mycompany\webapplicationdb\HomeServlet.class
 com\mycompany\webapplicationdb\LandingServlet.class
 com\mycompany\webapplicationdb\LoginServlet.class
 com\mycompany\webapplicationdb\ProfileServlet.class

@@ -57,10 +57,11 @@
         <div class="limited-container">
             <div class="container mt-3" style="max-width: 1745px; margin: 0 auto;">
                 <h2>Create a New Post</h2>
-                <form action="profile.jsp" method="POST">
+                <form action="/WebApplicationDB/profile" method="POST">
                     <div class="mb-3">
                         <label for="postContent" class="form-label">Your Post:</label>
                         <textarea class="form-control" id="postContent" name="post_content" rows="3" required></textarea>
+                        <input type="hidden" name="action" value="create" />
                     </div>
                     <button type="submit" class="btn btn-primary">Post</button>
                 </form>
@@ -73,13 +74,15 @@
                 <h2>@<%= profileUsername%>'s Posts</h2>
                 <ul class="list-group">
                     <% if (posts != null && !posts.isEmpty()) { %>
-                        <% for (String post : posts) {%>
+                    <% for (int i = 0; i < posts.size(); i++) {%>
                         <li class="list-group-item">
                             <p><b>@<%= profileUsername %></b></p>
-                            <p><%= post%></p>
+                            <p><%= posts.get(i) %></p>
                             <% if (profileUsername.equals(session.getAttribute("username"))) { %>
-                            <form>
+                            <form action="/WebApplicationDB/profile" method="POST">
                                 <button class="btn btn-danger">Delete</button>
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" name="post_index" value=<%= i + 1 %> />
                             </form>
                              <% } %>
                         </li>
