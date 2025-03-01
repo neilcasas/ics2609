@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
                 System.out.println("Username: " + username);
-                response.sendRedirect("views/landing.jsp");
+                response.sendRedirect("home");
             } else {
                 response.sendRedirect("login.jsp?error=invalid"); // Redirect back with an error
             }

@@ -1,4 +1,5 @@
 package com.mycompany.webapplicationdb;
+
 import java.sql.*;
 
 public class JDBC {
@@ -6,11 +7,11 @@ public class JDBC {
     private Connection conn;
 
     public JDBC(String port, String databaseName, String userName, String password) {
-        String jdbcUrl = "jdbc:mysql://localhost:" + port + "/" + databaseName +
-                         "?user=" + userName + "&password=" + password + "&useSSL=false";
+        String jdbcUrl = "jdbc:mysql://localhost:" + port + "/" + databaseName
+                + "?user=" + userName + "&password=" + password + "&useSSL=false";
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); 
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             conn = DriverManager.getConnection(jdbcUrl);
             System.err.println("✅ Connection successful! Connected to database: " + databaseName);
@@ -23,7 +24,6 @@ public class JDBC {
             e.printStackTrace();
         }
     }
-
 
     public ResultSet getUser(String username, String password) throws SQLException {
         String sqlStr = "SELECT * FROM account WHERE user_name = ? AND password = ?";
@@ -38,4 +38,17 @@ public class JDBC {
         Statement stmt = conn.createStatement();
         return stmt.executeQuery("SELECT * FROM account");
     }
+
+    public ResultSet getFollowedPosts(String username) throws SQLException {
+        String sqlStr = "SELECT p.user_name, p.post1, p.post2, p.post3, p.post4, p.post5 "
+                + "FROM posts p "
+                + "JOIN follows f ON p.user_name IN (f.follow1, f.follow2, f.follow3) "
+                + "WHERE f.user_name = ?";
+
+        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        stmt.setString(1, username);
+
+        return stmt.executeQuery();
+    }
+
 }

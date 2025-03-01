@@ -1,2 +1,3 @@
 com\mycompany\webapplicationdb\JDBC.class
+com\mycompany\webapplicationdb\LandingServlet.class
 com\mycompany\webapplicationdb\LoginServlet.class
