@@ -61,44 +61,28 @@ public class JDBC {
 
     // Add a new post
     public void createPost(String username, String content) {
-        try {
-            // Check if user already has posts
-            String selectQuery = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
-            PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+        String selectQuery = "SELECT post1, post2, post3, post4, post5 FROM posts WHERE user_name = ?";
+        String shiftQuery = "UPDATE posts SET post5 = post4, post4 = post3, post3 = post2, post2 = post1, post1 = ? WHERE user_name = ?";
+        String insertQuery = "INSERT INTO posts (user_name, post1) VALUES (?, ?)";
+
+        try (PreparedStatement selectStmt = conn.prepareStatement(selectQuery)) {
             selectStmt.setString(1, username);
             ResultSet rs = selectStmt.executeQuery();
 
             if (rs.next()) {
-                String[] posts = {
-                    rs.getString("post1"), rs.getString("post2"), rs.getString("post3"),
-                    rs.getString("post4"), rs.getString("post5")
-                };
-
-                // If there are empty slots, place the new post in the first available one
-                for (int i = 0; i < 5; i++) {
-                    if (posts[i] == null) {
-                        String updateQuery = "UPDATE posts SET post" + (i + 1) + " = ? WHERE user_name = ?";
-                        PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                        updateStmt.setString(1, content);
-                        updateStmt.setString(2, username);
-                        updateStmt.executeUpdate();
-                        return;
-                    }
+                // User exists, shift posts and insert new post1
+                try (PreparedStatement shiftStmt = conn.prepareStatement(shiftQuery)) {
+                    shiftStmt.setString(1, content);
+                    shiftStmt.setString(2, username);
+                    shiftStmt.executeUpdate();
                 }
-
-                // If all 5 slots are full, shift posts and insert new post in post1
-                String updateQuery = "UPDATE posts SET post5 = post4, post4 = post3, post3 = post2, post2 = post1, post1 = ? WHERE user_name = ?";
-                PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                updateStmt.setString(1, content);
-                updateStmt.setString(2, username);
-                updateStmt.executeUpdate();
             } else {
-                // If user doesn't have a row in posts, create one with the first post
-                String insertQuery = "INSERT INTO posts (user_name, post1) VALUES (?, ?)";
-                PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
-                insertStmt.setString(1, username);
-                insertStmt.setString(2, content);
-                insertStmt.executeUpdate();
+                // User doesn't exist, create a new row
+                try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                    insertStmt.setString(1, username);
+                    insertStmt.setString(2, content);
+                    insertStmt.executeUpdate();
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -202,7 +186,7 @@ public class JDBC {
                             updateStmt.setString(1, followUser);
                             updateStmt.setString(2, username);
                             updateStmt.executeUpdate();
-                            return true; 
+                            return true;
                         }
                     }
                 }
