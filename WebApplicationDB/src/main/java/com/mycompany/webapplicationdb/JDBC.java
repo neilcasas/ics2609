@@ -250,10 +250,18 @@ public class JDBC {
         }
         return 0;
     }
-    
+
     public void deleteUser(String username) throws SQLException {
         String sql = "DELETE FROM account WHERE user_name = '" + username + "'";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.executeUpdate(sql);
     }
+
+    public void updateUser(String originalUsername, String newUsername, String newPassword) throws SQLException {
+        String sql = "UPDATE account SET user_name = '" + newUsername + "', password = '" + newPassword
+                + "' WHERE user_name = '" + originalUsername + "'";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.executeUpdate();
+    }
+
 }
