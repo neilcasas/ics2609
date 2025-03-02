@@ -32,7 +32,7 @@
         </style>
     </head>
     <body>
-         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand fs-3" href="/WebApplicationDB/home">Welcome, <%= session.getAttribute("username")%></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -43,13 +43,16 @@
                         <a class="nav-link fs-4" href="/WebApplicationDB/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username") %>">Profile</a>
+                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username")%>">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/help">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="signout">Sign Out</a>
                     </li>
                 </ul>
             </div>

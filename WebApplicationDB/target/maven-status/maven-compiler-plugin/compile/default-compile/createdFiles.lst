@@ -12,6 +12,7 @@ com\mycompany\webapplicationdb\JDBC.class
 com\mycompany\webapplicationdb\HomeServlet.class
 com\mycompany\webapplicationdb\SuperAdminUpdateUserServlet.class
 com\mycompany\webapplicationdb\AdminCreateUserServlet.class
+com\mycompany\webapplicationdb\SignoutServlet.class
 com\mycompany\webapplicationdb\LoginServlet.class
 com\mycompany\webapplicationdb\ProfileServlet.class
 com\mycompany\webapplicationdb\SuperAdminCreateUserServlet.class

@@ -29,6 +29,9 @@
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/help">Help</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="signout">Sign Out</a>
+                    </li>
                 </ul>
             </div>
         </nav>

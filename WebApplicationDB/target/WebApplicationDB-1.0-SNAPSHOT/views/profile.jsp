@@ -42,13 +42,16 @@
                         <a class="nav-link fs-4" href="/WebApplicationDB/home">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username") %>">Profile</a>
+                        <a class="nav-link fs-4" href="/WebApplicationDB/profile?username=<%= session.getAttribute("username")%>">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/users">Users</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="/WebApplicationDB/help">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="signout">Sign Out</a>
                     </li>
                 </ul>
             </div>
@@ -69,24 +72,24 @@
                 <%
                     ArrayList<String> posts = (ArrayList<String>) request.getAttribute("posts");
                     String profileUsername = (String) request.getAttribute("username");
-                    
+
                 %>
                 <h2>@<%= profileUsername%>'s Posts</h2>
                 <ul class="list-group">
                     <% if (posts != null && !posts.isEmpty()) { %>
                     <% for (int i = 0; i < posts.size(); i++) {%>
-                        <li class="list-group-item">
-                            <p><b>@<%= profileUsername %></b></p>
-                            <p><%= posts.get(i) %></p>
-                            <% if (profileUsername.equals(session.getAttribute("username"))) { %>
-                            <form action="/WebApplicationDB/profile" method="POST">
-                                <button class="btn btn-danger">Delete</button>
-                                <input type="hidden" name="action" value="delete" />
-                                <input type="hidden" name="post_index" value=<%= i + 1 %> />
-                            </form>
-                             <% } %>
-                        </li>
+                    <li class="list-group-item">
+                        <p><b>@<%= profileUsername%></b></p>
+                        <p><%= posts.get(i)%></p>
+                        <% if (profileUsername.equals(session.getAttribute("username"))) {%>
+                        <form action="/WebApplicationDB/profile" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                            <input type="hidden" name="action" value="delete" />
+                            <input type="hidden" name="post_index" value=<%= i + 1%> />
+                        </form>
                         <% } %>
+                    </li>
+                    <% } %>
                     <% } else { %>
                     <p>No posts available.</p>
                     <% }%>
