@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.sql.ResultSet" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -65,6 +66,26 @@
             </div>
         </nav>
 
+        <h2>Messages</h2>
+        <div class="container">
+            <%
+                ResultSet messages = (ResultSet) request.getAttribute("messages");
+                if (messages != null) {
+                    while (messages.next()) {
+            %>
+            <div class="tweet-box">
+                <div class="tweet-username">@<%= messages.getString("sender")%></div>
+                <div class="tweet-content"><%= messages.getString("content")%></div>
+            </div>
+            <%
+                }
+            } else {
+            %>
+            <p>No messages available.</p>
+            <%
+                }
+            %>
+        </div>
         <h2>List of Users</h2>
         <div class="container">
             <%

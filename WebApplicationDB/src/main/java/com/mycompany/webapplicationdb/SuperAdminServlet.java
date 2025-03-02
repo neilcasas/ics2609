@@ -30,7 +30,7 @@ public class SuperAdminServlet extends HttpServlet {
         String username = (String) session.getAttribute("username");
 
         if (username == null) {
-            response.sendRedirect("login.jsp"); 
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -47,6 +47,12 @@ public class SuperAdminServlet extends HttpServlet {
                     usernames.add(user);
                 }
             }
+
+            ResultSet messages = jdbc.getMessages();
+            if (messages.next()) {
+                request.setAttribute("messages", messages);
+            }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }

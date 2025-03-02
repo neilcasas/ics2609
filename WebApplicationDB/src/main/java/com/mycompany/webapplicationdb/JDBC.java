@@ -180,6 +180,13 @@ public class JDBC {
 
         return stmt.executeQuery();
     }
+    
+    // Get admin messages
+    public ResultSet getMessages() throws SQLException {
+        String sqlStr = "SELECT sender, content FROM admin_messages";
+        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        return stmt.executeQuery();
+    }
 
     public void unfollowUser(String username, String unfollowed) throws SQLException {
         String sqlStr = "UPDATE follows SET "

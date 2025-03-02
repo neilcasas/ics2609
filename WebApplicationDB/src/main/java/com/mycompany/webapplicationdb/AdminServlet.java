@@ -37,11 +37,16 @@ public class AdminServlet extends HttpServlet {
         List<String> usernames = new ArrayList<>();
 
         try {
-            ResultSet rs = jdbc.getUsersByRole("user"); 
+            ResultSet rs = jdbc.getUsersByRole("user");
 
             while (rs.next()) {
                 String user = rs.getString("user_name");
                 usernames.add(user);
+            }
+
+            ResultSet messages = jdbc.getMessages();
+            if (messages.next()) {
+                request.setAttribute("messages", messages);
             }
         } catch (SQLException e) {
             e.printStackTrace();
