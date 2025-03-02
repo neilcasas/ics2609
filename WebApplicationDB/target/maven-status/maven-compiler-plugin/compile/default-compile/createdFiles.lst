@@ -2,6 +2,8 @@ com\mycompany\webapplicationdb\SignUpServlet.class
 com\mycompany\webapplicationdb\JDBC.class
 com\mycompany\webapplicationdb\HomeServlet.class
 com\mycompany\webapplicationdb\LandingServlet.class
+com\mycompany\webapplicationdb\AdminCreateUserServlet.class
+com\mycompany\webapplicationdb\AdminServlet.class
 com\mycompany\webapplicationdb\HelpServlet.class
 com\mycompany\webapplicationdb\LoginServlet.class
 com\mycompany\webapplicationdb\ProfileServlet.class

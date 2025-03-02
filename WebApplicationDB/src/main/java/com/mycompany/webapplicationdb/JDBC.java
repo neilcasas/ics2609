@@ -8,7 +8,7 @@ public class JDBC {
 
     public JDBC(String port, String databaseName, String userName, String password) {
         String jdbcUrl = "jdbc:mysql://localhost:" + port + "/" + databaseName
-                + "?user=" + userName + "&password=" + password + "&useSSL=false";
+                + "?user=" + userName + "&password=" + password + "&useSSL=false&allowPublicKeyRetrieval=true";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -31,6 +31,14 @@ public class JDBC {
         pstmt.setString(1, username);
         pstmt.setString(2, password);
         return pstmt.executeQuery();
+    }
+
+    public ResultSet getUsersByRole(String role) throws SQLException {
+        String sqlStr = "SELECT * FROM account WHERE user_role = ?";
+        System.out.println("Fetching users with role: " + role);
+        PreparedStatement stmt = conn.prepareStatement(sqlStr);
+        stmt.setString(1, role);
+        return stmt.executeQuery();
     }
 
     public ResultSet getAllUsers() throws SQLException {
@@ -231,6 +239,16 @@ public class JDBC {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public int getUserCount() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM account";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery(sql);
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
     }
 
 }
