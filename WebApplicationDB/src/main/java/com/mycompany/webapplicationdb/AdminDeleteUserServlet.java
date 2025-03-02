@@ -22,40 +22,61 @@ public class AdminDeleteUserServlet extends HttpServlet {
         jdbc = new JDBC("3306", "social_media", "root", "admin");
     }
 
-    // GET: Display the delete page with all users having role "user"
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<String> usernames = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         try {
             ResultSet rs = jdbc.getUsersByRole("user");
+
             while (rs.next()) {
-                String user = rs.getString("user_name"); // use "user_name" since that's the column name
-                usernames.add(user);
+                String username = rs.getString("user_name");
+                String password = rs.getString("password");
+                String role = rs.getString("user_role");
+
+                users.add(new User(username, password, role));
             }
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error fetching users: " + e.getMessage());
         }
-        request.setAttribute("usernames", usernames);
-        
+        request.setAttribute("users", users);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/delete.jsp");
         dispatcher.forward(request, response);
     }
-
-    // POST: Delete the selected user and refresh the page
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Use the same parameter name as in delete.jsp: "delete_user"
-        String usernameToDelete = request.getParameter("delete_user");
-        try {
-            jdbc.deleteUser(usernameToDelete);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Error deleting user: " + e.getMessage());
+        String[] usersToDelete = request.getParameterValues("delete_users");
+
+        List<User> deletedUsers = new ArrayList<>();
+
+        if (usersToDelete != null) {
+            for (String username : usersToDelete) {
+                try {
+                    // Fetch user details before deletion
+                    ResultSet rs = jdbc.getUser(username); // Use the existing `jdbc` instance
+                    if (rs.next()) {
+                        String password = rs.getString("password");
+                        String role = rs.getString("user_role");
+
+                        // Store user details before deleting
+                        deletedUsers.add(new User(username, password, role));
+
+                        // Now delete the user
+                        jdbc.deleteUser(username);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    request.setAttribute("error", "Error deleting user: " + e.getMessage());
+                }
+            }
         }
-        // Refresh the page by redirecting to the GET endpoint
-        response.sendRedirect(request.getContextPath() + "/adminDeleteUser");
+
+        request.setAttribute("deletedUsers", deletedUsers);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/deleteResult.jsp");
+        dispatcher.forward(request, response);
     }
+
 }

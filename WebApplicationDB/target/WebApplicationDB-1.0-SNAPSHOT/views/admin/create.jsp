@@ -69,12 +69,9 @@
 
     <div class="limited-container">
         <div class="container mt-3 card p-4 shadow-lg" style="max-width: 400px;">
-            <%
-                String error = (String) request.getAttribute("error");
-                
-                 if(error != null) {
-            %>
-            <div> <%= error %> </div>
+            <% String error = (String) request.getAttribute("error"); %>
+            <% if (error != null) { %>
+                <div class="alert alert-danger"><%= error %></div>
             <% } %>
             <h2 class="text-center">Create a new account</h2>
             <form action="adminCreateUser" method="POST">
@@ -85,6 +82,12 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Role</label>
+                    <select class="form-control" id="userRole" name="userRole" required>
+                        <option value="user">user</option>
+                    </select>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
                     <button type="submit" class="btn btn-primary">Create</button>

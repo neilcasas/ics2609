@@ -1,8 +1,6 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
-<%
-    String username = request.getParameter("username");
-%>
+<%@ page import="com.mycompany.webapplicationdb.User" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,26 +12,46 @@
         body {
             background-color: #f5f8fa;
         }
-        .container {
-            max-width: 600px;
-            margin-top: 20px;
-        }
-        .tweet-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 10px;
-        }
-        .tweet-username {
-            font-weight: bold;
-            color: #333;
-        }
-        .tweet-content {
-            margin-top: 5px;
-        }
         .navbar-brand{
             margin-left: 100px;
+        }
+
+        /* Form styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 50%;
+            padding: 8px;
+        }
+
+        .form-group select{
+            width: 50%;
+            padding: 8px;
+        }
+        button[type="submit"] {
+            width: 50%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        h3 {
+            text-align: left;
         }
     </style>
 </head>
@@ -60,31 +78,64 @@
           </ul>
         </div>
     </nav>
+    <div class="container">
+        <h2 class="text-center">Update Users</h2>
+        
+        <% String error = (String) request.getAttribute("error");
+           if (error != null) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        
+        <form action="<%= request.getContextPath() %>/adminUpdateUser" method="POST">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Select a User</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex">
+                            <div class="col-4 fw-bold">Username</div>
+                            <div class="col-4 fw-bold">Password</div>
+                            <div class="col-2 fw-bold">Role</div>
+                            <div class="col-2 fw-bold text-end">Select</div>
+                        </li>
+                        <% List<User> users = (List<User>) request.getAttribute("users");
+                           if (users != null && !users.isEmpty()) {
+                               for (User user : users) { %>
+                            <li class="list-group-item d-flex align-items-center">
+                                <div class="col-4 text-truncate"><%= user.getUsername() %></div>
+                                <div class="col-4 text-truncate"><%= user.getPassword() %></div>
+                                <div class="col-2"><%= user.getRole() %></div>
+                                <div class="col-2 text-end">
+                                    <input type="radio" name="selectedUser" value="<%= user.getUsername() %>" required>
+                                </div>
+                            </li>
+                        <%   }
+                           } else { %>
+                            <li class="list-group-item text-center">No users available.</li>
+                        <% } %>
+                    </ul>
+                </div>
+                
+                <div class="col-6">
+                    <h4>Edit User Details</h4>
+                    <div class="form-group">
+                        <label>New Username</label>
+                        <input type="text" name="newUsername" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" name="newPassword" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="newRole">Role</label>
+                        <select class="form-control" id="newRole" name="newRole" required>
+                            <option value="user">user</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Update User</button>
+                </div>
+            </div>
+        </form>
+    </div>        
 
-    <div class="limited-container">
-    <div class="container mt-3">
-        <h2 class="text-center">List of Users</h2>
-        <ul class="list-group">
-            <% 
-                List<String> usernames = (List<String>) request.getAttribute("usernames");
-                if (usernames != null && !usernames.isEmpty()) {
-                    for (String user : usernames) {
-            %>
-            <li class="list-group-item d-flex align-items-center justify-content-between">
-                <span><%= user %></span>
-                <form action="<%= request.getContextPath() %>/adminEditUser" method="GET" style="margin: 0;">
-                    <input type="hidden" name="username" value="<%= user %>">
-                    <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-                </form>
-            </li>
-            <% 
-                    }
-                } else { 
-            %>
-            <li class="list-group-item text-center">No users available.</li>
-            <% } %>
-        </ul>
-    </div>
-</div>
 </body>
 </html>

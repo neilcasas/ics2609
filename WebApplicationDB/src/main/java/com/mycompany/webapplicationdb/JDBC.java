@@ -33,12 +33,41 @@ public class JDBC {
         return pstmt.executeQuery();
     }
 
+    public ResultSet getUser(String username) throws SQLException {
+        String sqlStr = "SELECT * FROM account WHERE user_name = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sqlStr);
+        pstmt.setString(1, username);
+        return pstmt.executeQuery();
+    }
+
     public ResultSet getUsersByRole(String role) throws SQLException {
         String sqlStr = "SELECT * FROM account WHERE user_role = ?";
         System.out.println("Fetching users with role: " + role);
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
         stmt.setString(1, role);
         return stmt.executeQuery();
+    }
+
+    public void updateUser(String originalUsername, String newUsername, String newPassword, String newRole) throws SQLException {
+        String sql = "UPDATE account SET user_name = ?, password = ?, user_role = ? WHERE user_name = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newUsername);
+            pstmt.setString(2, newPassword);
+            pstmt.setString(3, newRole);
+            pstmt.setString(4, originalUsername);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public boolean usernameExists(String username) throws SQLException {
+        String query = "SELECT COUNT(*) FROM account WHERE user_name = ?";
+        PreparedStatement stmt = conn.prepareStatement(query);
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+        return false;
     }
 
     public ResultSet getAllUsers() throws SQLException {

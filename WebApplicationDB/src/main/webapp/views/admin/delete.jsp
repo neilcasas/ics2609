@@ -1,5 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="com.mycompany.webapplicationdb.User" %>
 <%@ page import="java.util.List" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +34,9 @@
         .navbar-brand{
             margin-left: 100px;
         }
+        h2{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -57,32 +62,42 @@
           </ul>
         </div>
     </nav>
-    <div class="limited-container">
-        <div class="container mt-3" style="max-width: 900px; margin: 0 auto;">
-            <h2>List of Users</h2>
-
-            <ul class="ps-3 list-group">
-                <% 
-                    List<String> usernames = (List<String>) request.getAttribute("usernames");
-                    if (usernames != null && !usernames.isEmpty()) {
-                        for (int i = 0; i < usernames.size(); i++) {
-                %>
-                <li class="list-group-item d-flex align-items-center justify-content-between">
-                    <span><%= usernames.get(i) %></span>
-                    <form action="<%= request.getContextPath() %>/adminDeleteUser" method="POST">
-                        <input type="hidden" name="delete_user" value="<%= usernames.get(i) %>">
-                        <input type="submit" class="btn btn-danger" value="Delete">
-                    </form>
+   <div class="container mt-4">
+        <h2>Delete Users</h2>
+        <form action="<%= request.getContextPath() %>/superAdminDeleteUser" method="POST">
+            <ul class="list-group">
+                <!-- Header Row -->
+                <li class="list-group-item d-flex">
+                    <div class="col-4 fw-bold">Username</div>
+                    <div class="col-4 fw-bold">Password</div>
+                    <div class="col-2 fw-bold">Role</div>
+                    <div class="col-2 fw-bold text-end">Delete</div>
                 </li>
-                <% 
+                <%
+                    List<User> users = (List<User>) request.getAttribute("users");
+                    if (users != null && !users.isEmpty()) {
+                        for (User user : users) {
+                %>
+                <li class="list-group-item d-flex align-items-center">
+                    <div class="col-4 text-truncate"><%= user.getUsername() %></div>
+                    <div class="col-4 text-truncate"><%= user.getPassword() %></div>
+                    <div class="col-2"><%= user.getRole() %></div>
+                    <div class="col-2 text-end">
+                        <input type="checkbox" name="delete_users" value="<%= user.getUsername() %>">
+                    </div>
+                </li>
+                <%
                         }
-                    } else { 
+                    } else {
                 %>
                 <li class="list-group-item text-center">No users available.</li>
                 <% } %>
             </ul>
-        </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-danger mt-3">Delete Selected Users</button>
+            </div>
+        </form>
     </div>
-
 </body>
 </html>
+
