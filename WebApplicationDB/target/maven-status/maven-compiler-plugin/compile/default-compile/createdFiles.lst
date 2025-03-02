@@ -6,5 +6,6 @@ com\mycompany\webapplicationdb\AdminCreateUserServlet.class
 com\mycompany\webapplicationdb\AdminServlet.class
 com\mycompany\webapplicationdb\HelpServlet.class
 com\mycompany\webapplicationdb\LoginServlet.class
+com\mycompany\webapplicationdb\AdminDeleteUserServlet.class
 com\mycompany\webapplicationdb\ProfileServlet.class
 com\mycompany\webapplicationdb\UsersServlet.class

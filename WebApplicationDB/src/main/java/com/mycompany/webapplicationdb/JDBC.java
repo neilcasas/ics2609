@@ -250,5 +250,10 @@ public class JDBC {
         }
         return 0;
     }
-
+    
+    public void deleteUser(String username) throws SQLException {
+        String sql = "DELETE FROM account WHERE user_name = '" + username + "'";
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.executeUpdate(sql);
+    }
 }
