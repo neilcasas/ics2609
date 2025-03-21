@@ -116,13 +116,13 @@
                                     <div class="col-2 text-truncate"><%= user.getPassword()%></div>
                                     <div class="col-2"><%= user.getRole()%></div>
                                     <div class="col-2">
-                                        <input type="text" name="newUsername-<%=user.getUsername()%>" class="form-control">
+                                        <input type="text" name="user_name-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                     <div class="col-2">
-                                        <input type="password" name="newPassword-<%=user.getUsername()%>" class="form-control">
+                                        <input type="password" name="password-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                     <div class="col-2">
-                                        <input type="password" name="newRole-<%=user.getUsername()%>" class="form-control">
+                                        <input type="password" name="user_role-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                 </div>
                             </li>
@@ -144,13 +144,13 @@
             updateBtn.addEventListener("click", (e) => {
                 e.preventDefault();
                 const responses = [];
-                
+
                 forms.forEach((form) => {
-                    if(form.value.trim() !== "" && form.name.trim() !== "") {
+                    if (form.value.trim() !== "" && form.name.trim() !== "") {
                         responses.push(form.name + ":" + form.value);
                     }
                 })
-                
+
                 // Send to servlet
                 fetch("/WebApplicationDB/adminUpdateUser", {
                     method: "POST",

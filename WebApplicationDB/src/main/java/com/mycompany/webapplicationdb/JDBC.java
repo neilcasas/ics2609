@@ -1,6 +1,8 @@
 package com.mycompany.webapplicationdb;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class JDBC {
 
@@ -180,7 +182,7 @@ public class JDBC {
 
         return stmt.executeQuery();
     }
-    
+
     // Get admin messages
     public ResultSet getMessages() throws SQLException {
         String sqlStr = "SELECT sender, content FROM admin_messages";
@@ -298,6 +300,33 @@ public class JDBC {
                 + "' WHERE user_name = '" + originalUsername + "'";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.executeUpdate();
+    }
+
+    public void updateUsername(String oldUsername, String newUsername) throws SQLException {
+        String sql = "UPDATE account SET user_name = ? WHERE user_name = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newUsername);
+            pstmt.setString(2, oldUsername);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void updatePassword(String username, String newPassword) throws SQLException {
+        String sql = "UPDATE account SET password = ? WHERE user_name = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, username);
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void updateRole(String username, String newRole) throws SQLException {
+        String sql = "UPDATE account SET user_role = ? WHERE user_name = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newRole);
+            pstmt.setString(2, username);
+            pstmt.executeUpdate();
+        }
     }
 
 }
