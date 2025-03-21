@@ -54,6 +54,7 @@
                 text-align: left;
             }
         </style>
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -85,60 +86,77 @@
             <h2 class="text-center">Update Users</h2>
 
             <% String error = (String) request.getAttribute("error");
-            if (error != null) {%>
+                if (error != null) {%>
             <div class="alert alert-danger"><%= error%></div>
             <% }%>
 
             <form action="<%= request.getContextPath()%>/adminUpdateUser" method="POST">
-                <div class="row">
-                    <div class="col-6">
+                <div class="row container-fluid">
+                    <div class="col">
                         <h4>Select a User</h4>
                         <ul class="list-group">
-                            <li class="list-group-item d-flex">
-                                <div class="col-4 fw-bold">Username</div>
-                                <div class="col-4 fw-bold">Password</div>
-                                <div class="col-2 fw-bold">Role</div>
-                                <div class="col-2 fw-bold text-end">Select</div>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-2 fw-bold">Username</div>
+                                    <div class="col-2 fw-bold">Password</div>
+                                    <div class="col-2 fw-bold">Role</div>
+                                    <div class="col-2 fw-bold">New Username</div>
+                                    <div class="col-2 fw-bold">New Password</div>
+                                    <div class="col-2 fw-bold">New Role</div>
+                                </div>
+
                             </li>
+
                             <% List<User> users = (List<User>) request.getAttribute("users");
-                            if (users != null && !users.isEmpty()) {
-                                for (User user : users) {%>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div class="col-4 text-truncate"><%= user.getUsername()%></div>
-                                <div class="col-4 text-truncate"><%= user.getPassword()%></div>
-                                <div class="col-2"><%= user.getRole()%></div>
-                                <div class="col-2 text-end">
-                                    <input type="radio" name="selectedUser" value="<%= user.getUsername()%>" required>
+                                if (users != null && !users.isEmpty()) {
+                                    for (User user : users) {%>
+                            <li class="list-group-item">
+                                <div class="row align-items-center">
+                                    <div class="col-2 text-truncate"><%= user.getUsername()%></div>
+                                    <div class="col-2 text-truncate"><%= user.getPassword()%></div>
+                                    <div class="col-2"><%= user.getRole()%></div>
+                                    <div class="col-2">
+                                        <input type="text" name="newUsername-<%=user.getUsername()%>" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="password" name="newPassword-<%=user.getUsername()%>" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="password" name="newRole-<%=user.getUsername()%>" class="form-control">
+                                    </div>
                                 </div>
                             </li>
-                            <%   }
-                        } else { %>
+                            <% }
+                            } else { %>
                             <li class="list-group-item text-center">No users available.</li>
                                 <% }%>
                         </ul>
-                    </div>
+                        <button id="updateUsers" class="btn btn-primary mt-4">Update Users</button>
 
-                    <div class="col-6">
-                        <h4>Edit User Details</h4>
-                        <div class="form-group">
-                            <label>New Username</label>
-                            <input type="text" name="newUsername" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>New Password</label>
-                            <input type="password" name="newPassword" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="newRole">Role</label>
-                            <select class="form-control" id="newRole" name="newRole" required>
-                                <option value="user">user</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Update User</button>
                     </div>
                 </div>
             </form>
         </div>        
+        <script>
+            const forms = document.querySelectorAll("input");
+            const updateBtn = document.querySelector("#updateUsers");
 
+            updateBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const responses = [];
+
+                forms.forEach((form) => {
+                    if (form.value.trim() !== "" && form.name.trim() !== "") {
+                        responses.push(form.name + ":" + form.value);
+                    }
+                })
+
+                // Send to servlet
+                fetch("/WebApplicationDB/adminUpdateUser", {
+                    method: "POST",
+                    body: responses
+                })
+            });
+        </script>
     </body>
 </html>

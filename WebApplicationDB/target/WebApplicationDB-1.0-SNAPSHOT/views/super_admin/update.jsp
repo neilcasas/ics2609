@@ -26,15 +26,15 @@
                 margin-bottom: 5px;
             }
 
-            .form-group select{
-                width: 50%;
-                padding: 8px;
-            }
             .form-group input {
                 width: 50%;
                 padding: 8px;
             }
 
+            .form-group select{
+                width: 50%;
+                padding: 8px;
+            }
             button[type="submit"] {
                 width: 50%;
                 padding: 10px;
@@ -54,26 +54,27 @@
                 text-align: left;
             }
         </style>
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand fs-3" href="super_admin">Welcome, <%= session.getAttribute("username")%></a>
+            <a class="navbar-brand fs-3" href="admin">Welcome, <%= session.getAttribute("username")%></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link fs-4" href="super_admin">Home</a>
+                        <a class="nav-link fs-4" href="admin">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="superAdminCreateUser">Create</a>
+                        <a class="nav-link fs-4" href="adminCreateUser">Create</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="superAdminDeleteUser">Delete</a>
+                        <a class="nav-link fs-4" href="adminDeleteUser">Delete</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="superAdminUpdateUser">Update  <span class="sr-only">(current)</span></a>
+                        <a class="nav-link fs-4" href="adminUpdateUser">Update  <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="signout">Sign Out</a>
@@ -81,65 +82,81 @@
                 </ul>
             </div>
         </nav>
-
         <div class="container">
             <h2 class="text-center">Update Users</h2>
 
             <% String error = (String) request.getAttribute("error");
-            if (error != null) {%>
+                if (error != null) {%>
             <div class="alert alert-danger"><%= error%></div>
             <% }%>
 
-            <form action="<%= request.getContextPath()%>/superAdminUpdateUser" method="POST">
-                <div class="row">
-                    <div class="col-6">
+            <form action="<%= request.getContextPath()%>/adminUpdateUser" method="POST">
+                <div class="row container-fluid">
+                    <div class="col">
                         <h4>Select a User</h4>
                         <ul class="list-group">
-                            <li class="list-group-item d-flex">
-                                <div class="col-4 fw-bold">Username</div>
-                                <div class="col-4 fw-bold">Password</div>
-                                <div class="col-2 fw-bold">Role</div>
-                                <div class="col-2 fw-bold text-end">Select</div>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-2 fw-bold">Username</div>
+                                    <div class="col-2 fw-bold">Password</div>
+                                    <div class="col-2 fw-bold">Role</div>
+                                    <div class="col-2 fw-bold">New Username</div>
+                                    <div class="col-2 fw-bold">New Password</div>
+                                    <div class="col-2 fw-bold">New Role</div>
+                                </div>
+
                             </li>
+
                             <% List<User> users = (List<User>) request.getAttribute("users");
-                            if (users != null && !users.isEmpty()) {
-                                for (User user : users) {%>
-                            <li class="list-group-item d-flex align-items-center">
-                                <div class="col-4 text-truncate"><%= user.getUsername()%></div>
-                                <div class="col-4 text-truncate"><%= user.getPassword()%></div>
-                                <div class="col-2"><%= user.getRole()%></div>
-                                <div class="col-2 text-end">
-                                    <input type="radio" name="selectedUser" value="<%= user.getUsername()%>" required>
+                                if (users != null && !users.isEmpty()) {
+                                    for (User user : users) {%>
+                            <li class="list-group-item">
+                                <div class="row align-items-center">
+                                    <div class="col-2 text-truncate"><%= user.getUsername()%></div>
+                                    <div class="col-2 text-truncate"><%= user.getPassword()%></div>
+                                    <div class="col-2"><%= user.getRole()%></div>
+                                    <div class="col-2">
+                                        <input type="text" name="newUsername-<%=user.getUsername()%>" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="password" name="newPassword-<%=user.getUsername()%>" class="form-control">
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="password" name="newRole-<%=user.getUsername()%>" class="form-control">
+                                    </div>
                                 </div>
                             </li>
-                            <%   }
-                        } else { %>
+                            <% }
+                            } else { %>
                             <li class="list-group-item text-center">No users available.</li>
                                 <% }%>
                         </ul>
-                    </div>
+                        <button id="updateUsers" class="btn btn-primary mt-4">Update Users</button>
 
-                    <div class="col-6">
-                        <h4>Edit User Details</h4>
-                        <div class="form-group">
-                            <label>New Username</label>
-                            <input type="text" name="newUsername" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>New Password</label>
-                            <input type="password" name="newPassword" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="newRole">New Role</label>
-                            <select class="form-control" id="newRole" name="newRole" required>
-                                <option value="user">user</option>
-                                <option value="admin">admin</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Update User</button>
                     </div>
                 </div>
             </form>
         </div>        
+        <script>
+            const forms = document.querySelectorAll("input");
+            const updateBtn = document.querySelector("#updateUsers");
+
+            updateBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const responses = [];
+                
+                forms.forEach((form) => {
+                    if(form.value.trim() !== "" && form.name.trim() !== "") {
+                        responses.push(form.name + ":" + form.value);
+                    }
+                })
+                
+                // Send to servlet
+                fetch("/WebApplicationDB/adminUpdateUser", {
+                    method: "POST",
+                    body: responses
+                })
+            });
+        </script>
     </body>
 </html>
