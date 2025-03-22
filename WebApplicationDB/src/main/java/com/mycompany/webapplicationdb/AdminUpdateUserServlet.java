@@ -62,7 +62,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
         String payload = requestBody.toString();
 
         String[] userPairs = payload.split(",");
-//        List<String> updated = new ArrayList<>();
+        List<String> updated = new ArrayList<>();
 
         /*  
         TODO: 
@@ -75,7 +75,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
                 System.out.println("User: " + user + "Field: " + field + "Value: " + value);
-//                updated.add("User: " + user + "Field: " + field + "Value: " + value);
+                updated.add("User: " + user + "Field: " + field + "Value: " + value);
                 try {
                     switch (field) {
                         case "user_name":
@@ -101,8 +101,8 @@ public class AdminUpdateUserServlet extends HttpServlet {
             }
         }
         response.setStatus(HttpServletResponse.SC_OK);
-        
-        
+        request.setAttribute("updated", updated);
+        System.out.println("updated list: " + updated);
         request.getRequestDispatcher("/views/admin/updateResult.jsp").forward(request, response);
     }
 }

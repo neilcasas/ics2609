@@ -63,35 +63,24 @@
         </nav>
         <div class="container mt-3">
             <h2 class="text-center">Recently Updated Users</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>New Password</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <ul>
+                <%
+                    List<String> updated = (List<String>) request.getAttribute("updated");
+                    System.out.println("updated list in jsp: " + updated);
+                    if (updated == null || updated.isEmpty()) {
+                %>
+                <li>No users were updated.</li>
                     <%
-                        List<User> updatedUsers = (List<User>) request.getAttribute("updatedUsers");
-                        if (updatedUsers != null && !updatedUsers.isEmpty()) {
-                            for (User user : updatedUsers) {
-                    %>
-                    <tr>
-                        <td><%= user.getUsername()%></td>
-                        <td><%= user.getPassword()%></td>
-                        <td><%= user.getRole()%></td>
-                    </tr>
-                    <%
-                        }
                     } else {
+                        for (String s : updated) {
                     %>
-                    <tr>
-                        <td colspan="3" class="text-center">No recently updated users.</td>
-                    </tr>
-                    <% }%>
-                </tbody>
-            </table>
+                <li><%= s%></li>
+                    <%
+                            }
+                        }
+                    %>
+            </ul>
+
             <div class="text-center">
                 <a href="<%= request.getContextPath()%>/adminUpdateUser" class="btn btn-primary">Back to Update Page</a>
             </div>

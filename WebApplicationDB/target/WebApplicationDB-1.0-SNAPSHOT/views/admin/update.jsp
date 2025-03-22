@@ -156,13 +156,12 @@
                     method: "POST",
                     body: responses
                 })
-                        .then(response => {
-                            if(response.ok) {
-                                window.location.href = "/WebApplicationDB/views/admin/updateResult.jsp"
-                            } else {
-                                console.error("Update failed.")
-                            }
-                        }) .catch (error => console.error("Error:" + error));
+                        .then(response => response.text())  
+                        .then(html => {
+                            document.body.innerHTML = html;
+                        })
+                        .catch(error => console.error("Error:", error));
+
             });
         </script>
     </body>
