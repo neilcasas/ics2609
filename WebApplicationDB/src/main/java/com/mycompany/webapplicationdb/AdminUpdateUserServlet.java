@@ -63,43 +63,44 @@ public class AdminUpdateUserServlet extends HttpServlet {
 
         String[] userPairs = payload.split(",");
 
-      /*  
+        /*  
         TODO: 
         - Add initial bulk edit (done!)
         - redirect to results page
         - add better error handling (ex. when invalid role was entered)
         - fix bug where super admin does not display admins on update page
-*/
+        - fix bug updating user role not working
+         */
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
             if (userPair.length == 2) {
                 String field = userPair[0].split("-")[0];
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
-                System.out.println("User: " + user +"Field: "+field+"Value: " + value);
-                
+                System.out.println("User: " + user + "Field: " + field + "Value: " + value);
+
                 try {
-                switch(field) {
-                    case "user_name":
-                        jdbc.updateUsername(user, value);
-                        break;
-                    case "password":
-                        jdbc.updatePassword(user, value);
-                        break;
-                    case "user_role":
-                        if(value != "user" || value != "admin" || value != "super_admin") {
+                    switch (field) {
+                        case "user_name":
+                            jdbc.updateUsername(user, value);
                             break;
-                        }
-                        jdbc.updateRole(user, value);
-                        break;
-                    default:
-                        System.out.println("Error");
-                        break;
-                }
+                        case "password":
+                            jdbc.updatePassword(user, value);
+                            break;
+                        case "user_role":
+                            if ("user".equals(value) || !"admin".equals(value) || !"super_admin".equals(value)) {
+                                jdbc.updateRole(user, value);
+                                break;
+                            }
+                            break;
+                        default:
+                            System.out.println("Error");
+                            break;
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                
+
             }
         }
         request.getRequestDispatcher("/WebApplicationDB/adminUpdateUser").forward(request, response);

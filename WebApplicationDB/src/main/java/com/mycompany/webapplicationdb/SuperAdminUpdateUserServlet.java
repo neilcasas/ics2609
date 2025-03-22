@@ -60,23 +60,49 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
 
         // Convert to string
         String payload = requestBody.toString();
-        System.out.println("Received Payload: " + payload); // Debugging
 
-        // Split by commas
-        String[] keyValuePairs = payload.split(",");
+        String[] userPairs = payload.split(",");
 
-        // Process key-value pairs
-        for (String pair : keyValuePairs) {
-            String[] entry = pair.split(":");
-            if (entry.length == 2) {
-                String key = entry[0].trim();
-                String value = entry[1].trim();
-                System.out.println("Key: " + key + ", Value: " + value);
+        /*  
+        TODO: 
+        - Add initial bulk edit (done!)
+        - redirect to results page
+        - add better error handling (ex. when invalid role was entered)
+        - fix bug where super admin does not display admins on update page
+        - fix bug updating user role not working
+         */
+        for (String pair : userPairs) {
+            String[] userPair = pair.split(":");
+            if (userPair.length == 2) {
+                String field = userPair[0].split("-")[0];
+                String user = userPair[0].split("-")[1];
+                String value = userPair[1].trim();
+                System.out.println("User: " + user + "Field: " + field + "Value: " + value);
+
+                try {
+                    switch (field) {
+                        case "user_name":
+                            jdbc.updateUsername(user, value);
+                            break;
+                        case "password":
+                            jdbc.updatePassword(user, value);
+                            break;
+                        case "user_role":
+                            if ("user".equals(value) || !"admin".equals(value) || !"super_admin".equals(value)) {
+                                jdbc.updateRole(user, value);
+                                break;
+                            }
+                            break;
+                        default:
+                            System.out.println("Error");
+                            break;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
-
-        // Send a response
-        response.setContentType("text/plain");
-        response.getWriter().write("Received successfully!");
+        request.getRequestDispatcher("/WebApplicationDB/adminUpdateUser").forward(request, response);
     }
 }

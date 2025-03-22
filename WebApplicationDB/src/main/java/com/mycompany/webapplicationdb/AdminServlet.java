@@ -54,7 +54,7 @@ public class AdminServlet extends HttpServlet {
 
         request.setAttribute("usernames", usernames);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/admin.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/landing.jsp");
         dispatcher.forward(request, response);
     }
 
