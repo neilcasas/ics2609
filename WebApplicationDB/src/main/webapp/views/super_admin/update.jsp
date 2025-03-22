@@ -90,50 +90,50 @@
             <div class="alert alert-danger"><%= error%></div>
             <% }%>
 
-                <div class="row container-fluid">
-                    <div class="col">
-                        <h4>Select a User</h4>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="row">
-                                    <div class="col-2 fw-bold">Username</div>
-                                    <div class="col-2 fw-bold">Password</div>
-                                    <div class="col-2 fw-bold">Role</div>
-                                    <div class="col-2 fw-bold">New Username</div>
-                                    <div class="col-2 fw-bold">New Password</div>
-                                    <div class="col-2 fw-bold">New Role</div>
-                                </div>
+            <div class="row container-fluid">
+                <div class="col">
+                    <h4>Select a User</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-2 fw-bold">Username</div>
+                                <div class="col-2 fw-bold">Password</div>
+                                <div class="col-2 fw-bold">Role</div>
+                                <div class="col-2 fw-bold">New Username</div>
+                                <div class="col-2 fw-bold">New Password</div>
+                                <div class="col-2 fw-bold">New Role</div>
+                            </div>
 
-                            </li>
+                        </li>
 
-                            <% List<User> users = (List<User>) request.getAttribute("users");
-                                if (users != null && !users.isEmpty()) {
-                                    for (User user : users) {%>
-                            <li class="list-group-item">
-                                <div class="row align-items-center">
-                                    <div class="col-2 text-truncate"><%= user.getUsername()%></div>
-                                    <div class="col-2 text-truncate"><%= user.getPassword()%></div>
-                                    <div class="col-2"><%= user.getRole()%></div>
-                                    <div class="col-2">
-                                        <input type="text" name="user_name-<%=user.getUsername()%>" class="form-control">
-                                    </div>
-                                    <div class="col-2">
-                                        <input type="password" name="password-<%=user.getUsername()%>" class="form-control">
-                                    </div>
-                                    <div class="col-2">
-                                        <input type="text" name="user_role-<%=user.getUsername()%>" class="form-control">
-                                    </div>
+                        <% List<User> users = (List<User>) request.getAttribute("users");
+                            if (users != null && !users.isEmpty()) {
+                                for (User user : users) {%>
+                        <li class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-2 text-truncate"><%= user.getUsername()%></div>
+                                <div class="col-2 text-truncate"><%= user.getPassword()%></div>
+                                <div class="col-2"><%= user.getRole()%></div>
+                                <div class="col-2">
+                                    <input type="text" name="user_name-<%=user.getUsername()%>" class="form-control">
                                 </div>
-                            </li>
-                            <% }
+                                <div class="col-2">
+                                    <input type="password" name="password-<%=user.getUsername()%>" class="form-control">
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" name="user_role-<%=user.getUsername()%>" class="form-control">
+                                </div>
+                            </div>
+                        </li>
+                        <% }
                             } else { %>
-                            <li class="list-group-item text-center">No users available.</li>
-                                <% }%>
-                        </ul>
-                        <button id="updateUsers" class="btn btn-primary mt-4">Update Users</button>
+                        <li class="list-group-item text-center">No users available.</li>
+                            <% }%>
+                    </ul>
+                    <button id="updateUsers" class="btn btn-primary mt-4">Update Users</button>
 
-                    </div>
                 </div>
+            </div>
         </div>        
         <script>
             const forms = document.querySelectorAll("input");
@@ -150,10 +150,16 @@
                 })
 
                 // Send to servlet
-                fetch("/WebApplicationDB/adminUpdateUser", {
+                fetch("/WebApplicationDB/superAdminUpdateUser", {
                     method: "POST",
                     body: responses
                 })
+                        .then(response => response.text())
+                        .then(html => {
+                            document.body.innerHTML = html; // replace everything with what servlet sent
+                        })
+                        .catch(error => console.error("Error:", error));
+
             });
         </script>
     </body>

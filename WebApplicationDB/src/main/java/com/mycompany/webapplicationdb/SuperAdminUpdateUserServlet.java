@@ -43,7 +43,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
                 String role = admins.getString("user_role");
                 users.add(new User(username, password, role));
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error fetching users: " + e.getMessage());
@@ -69,7 +69,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
 
         // Convert to string
         String payload = requestBody.toString();
-
+        List<String> updated = new ArrayList<>();
         String[] userPairs = payload.split(",");
 
         /*  
@@ -83,8 +83,8 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
                 String field = userPair[0].split("-")[0];
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
-                System.out.println("User: " + user + "Field: " + field + "Value: " + value);
-
+                System.out.println("User: " + user + " Field: " + field + " Value: " + value);
+                updated.add("User: " + user + " Field: " + field + " Value: " + value);
                 try {
                     switch (field) {
                         case "user_name":
@@ -109,7 +109,9 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
 
             }
         }
-        response.setStatus(HttpServletResponse.SC_OK); // Explicitly set HTTP 200 OK
-        request.getRequestDispatcher("/views/admin/updateResult.jsp").forward(request, response);
+        response.setStatus(HttpServletResponse.SC_OK);
+        request.setAttribute("updated", updated);
+        System.out.println("updated list: " + updated);
+        request.getRequestDispatcher("/views/super_admin/updateResult.jsp").forward(request, response);
     }
 }

@@ -158,7 +158,7 @@
                 })
                         .then(response => response.text())  
                         .then(html => {
-                            document.body.innerHTML = html;
+                            document.body.innerHTML = html; // replace everything with what servlet sent
                         })
                         .catch(error => console.error("Error:", error));
 

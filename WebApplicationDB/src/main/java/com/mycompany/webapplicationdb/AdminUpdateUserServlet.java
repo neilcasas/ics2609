@@ -64,18 +64,14 @@ public class AdminUpdateUserServlet extends HttpServlet {
         String[] userPairs = payload.split(",");
         List<String> updated = new ArrayList<>();
 
-        /*  
-        TODO: 
-        - redirect to results page
-         */
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
             if (userPair.length == 2) {
                 String field = userPair[0].split("-")[0];
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
-                System.out.println("User: " + user + "Field: " + field + "Value: " + value);
-                updated.add("User: " + user + "Field: " + field + "Value: " + value);
+                System.out.println("User: " + user + " Field: " + field + " Value: " + value);
+                updated.add("User: " + user + " Field: " + field + " Value: " + value);
                 try {
                     switch (field) {
                         case "user_name":
