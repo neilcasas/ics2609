@@ -35,6 +35,15 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
                 String role = rs.getString("user_role");
                 users.add(new User(username, password, role));
             }
+
+            ResultSet admins = jdbc.getUsersByRole("admin");
+            while (admins.next()) {
+                String username = admins.getString("user_name");
+                String password = admins.getString("password");
+                String role = admins.getString("user_role");
+                users.add(new User(username, password, role));
+            }
+            
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error fetching users: " + e.getMessage());
@@ -65,11 +74,8 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
 
         /*  
         TODO: 
-        - Add initial bulk edit (done!)
         - redirect to results page
         - add better error handling (ex. when invalid role was entered)
-        - fix bug where super admin does not display admins on update page
-        - fix bug updating user role not working
          */
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
@@ -88,7 +94,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
                             jdbc.updatePassword(user, value);
                             break;
                         case "user_role":
-                            if ("user".equals(value) || !"admin".equals(value) || !"super_admin".equals(value)) {
+                            if ("user".equals(value) || !"admin".equals(value)) {
                                 jdbc.updateRole(user, value);
                                 break;
                             }
@@ -103,6 +109,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
 
             }
         }
-        request.getRequestDispatcher("/WebApplicationDB/adminUpdateUser").forward(request, response);
+        response.setStatus(HttpServletResponse.SC_OK); // Explicitly set HTTP 200 OK
+        request.getRequestDispatcher("/views/admin/updateResult.jsp").forward(request, response);
     }
 }

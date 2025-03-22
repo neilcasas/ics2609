@@ -65,11 +65,8 @@ public class AdminUpdateUserServlet extends HttpServlet {
 
         /*  
         TODO: 
-        - Add initial bulk edit (done!)
         - redirect to results page
         - add better error handling (ex. when invalid role was entered)
-        - fix bug where super admin does not display admins on update page
-        - fix bug updating user role not working
          */
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
@@ -88,7 +85,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
                             jdbc.updatePassword(user, value);
                             break;
                         case "user_role":
-                            if ("user".equals(value) || !"admin".equals(value) || !"super_admin".equals(value)) {
+                            if ("user".equals(value) || !"admin".equals(value)) {
                                 jdbc.updateRole(user, value);
                                 break;
                             }
@@ -103,6 +100,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
 
             }
         }
-        request.getRequestDispatcher("/WebApplicationDB/adminUpdateUser").forward(request, response);
+        response.setStatus(HttpServletResponse.SC_OK); // Explicitly set HTTP 200 OK
+        request.getRequestDispatcher("/views/admin/updateResult.jsp").forward(request, response);
     }
 }

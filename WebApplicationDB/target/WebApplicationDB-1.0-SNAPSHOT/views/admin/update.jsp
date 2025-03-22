@@ -122,7 +122,7 @@
                                         <input type="password" name="password-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                     <div class="col-2">
-                                        <input type="password" name="user_role-<%=user.getUsername()%>" class="form-control">
+                                        <input type="text" name="user_role-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                 </div>
                             </li>
@@ -156,6 +156,13 @@
                     method: "POST",
                     body: responses
                 })
+                        .then(response => {
+                            if(response.ok) {
+                                window.location.href = "/WebApplicationDB/views/admin/updateResult.jsp"
+                            } else {
+                                console.error("Update failed.")
+                            }
+                        }) .catch (error => console.error("Error:" + error));
             });
         </script>
     </body>

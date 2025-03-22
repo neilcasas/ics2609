@@ -122,7 +122,7 @@
                                         <input type="password" name="password-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                     <div class="col-2">
-                                        <input type="password" name="user_role-<%=user.getUsername()%>" class="form-control">
+                                        <input type="text" name="user_role-<%=user.getUsername()%>" class="form-control">
                                     </div>
                                 </div>
                             </li>
