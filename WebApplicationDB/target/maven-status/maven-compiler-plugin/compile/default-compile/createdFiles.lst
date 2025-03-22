@@ -1,6 +1,7 @@
 com\mycompany\webapplicationdb\SignUpServlet.class
 com\mycompany\webapplicationdb\LandingServlet.class
 com\mycompany\webapplicationdb\SuperAdminServlet.class
+com\mycompany\webapplicationdb\DatabaseConnection.class
 com\mycompany\webapplicationdb\AdminServlet.class
 com\mycompany\webapplicationdb\HelpServlet.class
 com\mycompany\webapplicationdb\User.class

@@ -17,7 +17,7 @@ public class AdminCreateUserServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        jdbc = new JDBC("3306", "social_media", "root", "admin");
+        jdbc = new JDBC("3306", "social_media", "root", "1234");
     }
 
     @Override
@@ -38,11 +38,19 @@ public class AdminCreateUserServlet extends HttpServlet {
         String userRole = "user"; // Default role
 
         try {
+            // Check if the username is already taken
+            if (jdbc.usernameExists(username)) {
+                request.setAttribute("error", "Username is already taken. Please choose a different username.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+            
             // 🔴 Check if the number of users exceeds the limit
             int userCount = jdbc.getUserCount();
             if (userCount >= 5) {
                 request.setAttribute("error", "Maximum user limit (5) reached. Cannot create a new account.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/create.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
@@ -53,7 +61,7 @@ public class AdminCreateUserServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error creating account: " + e.getMessage());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/create.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
             dispatcher.forward(request, response);
         }
     }

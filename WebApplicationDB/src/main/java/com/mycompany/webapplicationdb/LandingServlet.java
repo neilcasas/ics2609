@@ -20,7 +20,7 @@ public class LandingServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        jdbc = new JDBC("3306", "social_media", "root", "admin");
+        jdbc = new JDBC("3306", "social_media", "root", "1234");
     }
 
     @Override

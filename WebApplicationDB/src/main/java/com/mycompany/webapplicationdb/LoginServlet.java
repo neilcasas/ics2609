@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        jdbc = new JDBC("3306", "social_media", "root", "admin");
+        jdbc = new JDBC("3306", "social_media", "root", "1234");
     }
 
     @Override
@@ -51,13 +51,13 @@ public class LoginServlet extends HttpServlet {
 
             } else {
                 request.setAttribute("error", "Invalid username or password");
-                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/error.jsp").forward(request, response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
     }
 }
