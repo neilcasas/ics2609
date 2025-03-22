@@ -77,38 +77,56 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
         - redirect to results page
         - add better error handling (ex. when invalid role was entered)
          */
+        List<String> usernameUpdates = new ArrayList<>();
+
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
             if (userPair.length == 2) {
                 String field = userPair[0].split("-")[0];
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
+
                 System.out.println("User: " + user + " Field: " + field + " Value: " + value);
                 updated.add("User: " + user + " Field: " + field + " Value: " + value);
+
                 try {
-                    switch (field) {
-                        case "user_name":
-                            jdbc.updateUsername(user, value);
-                            break;
-                        case "password":
-                            jdbc.updatePassword(user, value);
-                            break;
-                        case "user_role":
-                            if ("user".equals(value) || "admin".equals(value)) {
-                                jdbc.updateRole(user, value);
+                    if ("user_name".equals(field)) {
+                        // Store username updates separately to execute them later
+                        usernameUpdates.add(pair);
+                    } else {
+                        // Execute all other updates immediately
+                        switch (field) {
+                            case "password":
+                                jdbc.updatePassword(user, value);
                                 break;
-                            }
-                            break;
-                        default:
-                            System.out.println("Error");
-                            break;
+                            case "user_role":
+                                if ("user".equals(value) || "admin".equals(value)) {
+                                    jdbc.updateRole(user, value);
+                                }
+                                break;
+                            default:
+                                System.out.println("Error");
+                                break;
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
         }
+
+        for (String pair : usernameUpdates) {
+            String[] userPair = pair.split(":");
+            String user = userPair[0].split("-")[1];
+            String value = userPair[1].trim();
+
+            try {
+                jdbc.updateUsername(user, value);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
         response.setStatus(HttpServletResponse.SC_OK);
         request.setAttribute("updated", updated);
         System.out.println("updated list: " + updated);
