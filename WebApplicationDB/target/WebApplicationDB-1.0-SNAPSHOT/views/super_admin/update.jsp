@@ -68,10 +68,10 @@
                         <a class="nav-link fs-4" href="admin">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="adminCreateUser">Create</a>
+                        <a class="nav-link fs-4" href="superAdminCreateUser">Create</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="adminDeleteUser">Delete</a>
+                        <a class="nav-link fs-4" href="superAdminDeleteUser">Delete</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="superAdminUpdateUser">Update  <span class="sr-only">(current)</span></a>

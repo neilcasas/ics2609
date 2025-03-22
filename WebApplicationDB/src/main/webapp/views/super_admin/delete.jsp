@@ -65,7 +65,7 @@
 
         <div class="container mt-4">
             <h2>Delete Users</h2>
-            <form action="<%= request.getContextPath()%>/adminDeleteUser" method="POST">
+            <form action="<%= request.getContextPath()%>/superAdminDeleteUser" method="POST">
                 <ul class="list-group">
                     <!-- Header Row -->
                     <li class="list-group-item d-flex">
