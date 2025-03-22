@@ -35,13 +35,13 @@ public class SuperAdminCreateUserServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String userRole = request.getParameter("userRole"); 
+        String userRole = request.getParameter("userRole");
 
         try {
             // Validate role
             if (!"user".equalsIgnoreCase(userRole) && !"admin".equalsIgnoreCase(userRole)) {
                 request.setAttribute("error", "Invalid role! Please select 'user' or 'admin'.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/super_admin/create.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
@@ -50,7 +50,7 @@ public class SuperAdminCreateUserServlet extends HttpServlet {
             int userCount = jdbc.getUserCount();
             if (userCount >= 5) {
                 request.setAttribute("error", "Maximum user limit (5) reached. Cannot create a new account.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/super_admin/create.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
@@ -61,7 +61,7 @@ public class SuperAdminCreateUserServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Error creating account: " + e.getMessage());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/super_admin/create.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/error.jsp");
             dispatcher.forward(request, response);
         }
     }

@@ -45,19 +45,19 @@ public class LoginServlet extends HttpServlet {
                         response.sendRedirect("super_admin");
                         break;
                     default:
-                        response.sendRedirect("home"); 
+                        response.sendRedirect("home");
                         break;
                 }
 
             } else {
                 request.setAttribute("error", "Invalid username or password");
-                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/views/error.jsp").forward(request, response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/error.jsp").forward(request, response);
         }
     }
 }
