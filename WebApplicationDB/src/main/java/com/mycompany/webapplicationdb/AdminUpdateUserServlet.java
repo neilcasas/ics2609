@@ -62,11 +62,11 @@ public class AdminUpdateUserServlet extends HttpServlet {
         String payload = requestBody.toString();
 
         String[] userPairs = payload.split(",");
+//        List<String> updated = new ArrayList<>();
 
         /*  
         TODO: 
         - redirect to results page
-        - add better error handling (ex. when invalid role was entered)
          */
         for (String pair : userPairs) {
             String[] userPair = pair.split(":");
@@ -75,7 +75,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
                 String user = userPair[0].split("-")[1];
                 String value = userPair[1].trim();
                 System.out.println("User: " + user + "Field: " + field + "Value: " + value);
-
+//                updated.add("User: " + user + "Field: " + field + "Value: " + value);
                 try {
                     switch (field) {
                         case "user_name":
@@ -85,7 +85,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
                             jdbc.updatePassword(user, value);
                             break;
                         case "user_role":
-                            if ("user".equals(value) || !"admin".equals(value)) {
+                            if ("user".equals(value) || "admin".equals(value)) {
                                 jdbc.updateRole(user, value);
                                 break;
                             }
@@ -100,7 +100,9 @@ public class AdminUpdateUserServlet extends HttpServlet {
 
             }
         }
-        response.setStatus(HttpServletResponse.SC_OK); // Explicitly set HTTP 200 OK
+        response.setStatus(HttpServletResponse.SC_OK);
+        
+        
         request.getRequestDispatcher("/views/admin/updateResult.jsp").forward(request, response);
     }
 }

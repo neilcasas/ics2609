@@ -51,7 +51,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
         request.setAttribute("users", users);
 
         // Forward to update.jsp
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/admin/update.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/super_admin/update.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -94,7 +94,7 @@ public class SuperAdminUpdateUserServlet extends HttpServlet {
                             jdbc.updatePassword(user, value);
                             break;
                         case "user_role":
-                            if ("user".equals(value) || !"admin".equals(value)) {
+                            if ("user".equals(value) || "admin".equals(value)) {
                                 jdbc.updateRole(user, value);
                                 break;
                             }

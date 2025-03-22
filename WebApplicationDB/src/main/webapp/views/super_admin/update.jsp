@@ -74,7 +74,7 @@
                         <a class="nav-link fs-4" href="adminDeleteUser">Delete</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-4" href="adminUpdateUser">Update  <span class="sr-only">(current)</span></a>
+                        <a class="nav-link fs-4" href="superAdminUpdateUser">Update  <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-4" href="signout">Sign Out</a>
@@ -90,7 +90,6 @@
             <div class="alert alert-danger"><%= error%></div>
             <% }%>
 
-            <form action="<%= request.getContextPath()%>/adminUpdateUser" method="POST">
                 <div class="row container-fluid">
                     <div class="col">
                         <h4>Select a User</h4>
@@ -135,7 +134,6 @@
 
                     </div>
                 </div>
-            </form>
         </div>        
         <script>
             const forms = document.querySelectorAll("input");
